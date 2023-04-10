@@ -1,0 +1,8 @@
+C Hash Table
+=============
+Toy implementation of a C hash table. Please don't actualy use (not
+that you'd want to.)
+
+Requirements
+------------
+In order to build you need GNU make.
