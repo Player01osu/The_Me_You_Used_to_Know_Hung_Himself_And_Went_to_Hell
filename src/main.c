@@ -13,7 +13,8 @@ int main(int argc, char *argv[])
 
 	printf("%lu\n", hash_table->hash_func("nutt"));
 	printf("%d\n", hash_table_insert(hash_table, nuts, value));
-	printf("%d\n", hash_table_insert(hash_table, "fand", "you dont even know what I have gone through"));
+	printf("%d\n", hash_table_insert(hash_table, "fand",
+					 "you dont even know what I have gone through"));
 	printf("%d\n", hash_table_insert(hash_table, "sjweifo", "i"));
 	printf("%d\n", hash_table_insert(hash_table, "efewejfi", "i"));
 	printf("%d\n", hash_table_insert(hash_table, "test", "i"));
@@ -37,7 +38,8 @@ int main(int argc, char *argv[])
 		} else {
 			printf("Nope :<\n");
 		}
-	}{
+	}
+	{
 		char *find_me = "fand";
 		char *found_ya = hash_table_find(hash_table, find_me);
 		if (found_ya != NULL) {
@@ -45,7 +47,8 @@ int main(int argc, char *argv[])
 		} else {
 			printf("Nope :<\n");
 		}
-	}{
+	}
+	{
 		char *find_me = "fwejfiojweiofwej";
 		char *found_ya = hash_table_find(hash_table, find_me);
 		if (found_ya != NULL) {
@@ -53,7 +56,8 @@ int main(int argc, char *argv[])
 		} else {
 			printf("Nope: %s :<\n", find_me);
 		}
-	}{
+	}
+	{
 		char *find_me = "test10";
 		char *found_ya = hash_table_find(hash_table, find_me);
 		if (found_ya != NULL) {
@@ -63,7 +67,59 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	hash_table_remove(hash_table, "HI");
+	{
+		char *remove_me = "test4";
+		char *removed_ya = hash_table_remove(hash_table, remove_me);
+		if (removed_ya) {
+			printf("Deleted %s =|> %s\n", remove_me, removed_ya);
+		} else {
+			printf("No one's there: %s :<\n", remove_me);
+		}
+	}
+	{
+		char *remove_me = "HI";
+		char *removed_ya = hash_table_remove(hash_table, remove_me);
+		if (removed_ya) {
+			printf("Deleted %s =|> %s\n", remove_me, removed_ya);
+		} else {
+			printf("No one's there: %s :<\n", remove_me);
+		}
+	}
+
+	{
+		char *remove_me = "fand";
+		char *removed_ya = hash_table_remove(hash_table, remove_me);
+		if (removed_ya) {
+			printf("Deleted %s =|> %s\n", remove_me, removed_ya);
+		} else {
+			printf("No one's there: %s :<\n", remove_me);
+		}
+	}
+
+	{
+		char *find_me = "fand";
+		char *found_ya = hash_table_find(hash_table, find_me);
+		if (found_ya != NULL) {
+			printf("%s => %s\n", find_me, found_ya);
+		} else {
+			printf("Nope: %s :<\n", find_me);
+		}
+	}
+	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
+	{
+		char *find_me = "fand";
+		char *found_ya = hash_table_find(hash_table, find_me);
+		if (found_ya != NULL) {
+			printf("%s => %s\n", find_me, found_ya);
+		} else {
+			printf("Nope: %s :<\n", find_me);
+		}
+	}
+
+	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
+	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
+	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
+	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
 
 	return EXIT_SUCCESS;
 }
