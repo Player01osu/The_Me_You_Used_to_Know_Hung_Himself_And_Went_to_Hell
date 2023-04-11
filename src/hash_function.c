@@ -2,12 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stddef.h>
-
-void todo(char *msg)
-{
-	fprintf(stderr, "%s", msg);
-	exit(69);
-}
+#include "utils.h"
 
 size_t hash_int32(int32_t d)
 {
