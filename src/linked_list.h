@@ -1,4 +1,5 @@
 #ifndef LINKEDLIST
+#define LINKEDLIST
 
 typedef struct LinkedList {
 	char *key;
