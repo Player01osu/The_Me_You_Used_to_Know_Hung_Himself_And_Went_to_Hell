@@ -6,7 +6,7 @@
 
 size_t hash_int32(int32_t d)
 {
-	todo("This fucking is not implemented right.\nFuck off and maybe I'll implement it later. :D\n");
+	todo("hash_int32: Not implemented");
 	return 1;
 }
 
