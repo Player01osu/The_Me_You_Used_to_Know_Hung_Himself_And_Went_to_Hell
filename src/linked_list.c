@@ -22,6 +22,8 @@ void linked_list_push_front(LinkedList *root, char *key, char *value)
 {
 	LinkedList *new_node = malloc(sizeof(LinkedList));
 	new_node->next = root->next;
+	new_node->key = key;
+	new_node->value = value;
 	root->next = new_node;
 }
 

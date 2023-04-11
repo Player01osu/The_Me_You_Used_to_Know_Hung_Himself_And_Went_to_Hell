@@ -48,7 +48,6 @@ void hash_table_resize(HashTable *hash_table)
 	hash_table->size = GROW_TABLE(hash_table->size);
 	hash_table->bucket = malloc(sizeof(LinkedList *) * hash_table->size);
 
-	// Initialize rest bucket
 	for (size_t i = 0; i < hash_table->size; ++i) {
 		hash_table->bucket[i] = linked_list_new();
 
@@ -57,18 +56,16 @@ void hash_table_resize(HashTable *hash_table)
 	}
 
 	// Recompute hashes and insert into new bucket.
-	for (size_t i = 0; i < old_size; ++i) {
-		// Follow linked list
-		LinkedList *p = old_bucket[i];
-		// TODO This could be better.
-		if (p->next) {
-			p = p->next;
-			do {
-				size_t idx = hash_table->hash_func(p->key) % hash_table->size;
-				linked_list_push(hash_table->bucket[idx], p->key, p->value);
-				p = p->next;
-			} while (p);
+	// Follow linked list
+	LinkedList *p = *old_bucket;
+	while (p) {
+		if (p->key) {
+			size_t idx = hash_table->hash_func(p->key) % hash_table->size;
+			linked_list_push_front(hash_table->bucket[idx], p->key, p->value);
 		}
+		p = p->next;
+	}
+	for (size_t i = 0; i < old_size; ++i) {
 		free(old_bucket[i]);
 	}
 }
@@ -81,9 +78,12 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 		hash_table->bucket = malloc(sizeof(LinkedList *) * hash_table->size);
 		for (size_t i = 0; i < hash_table->size; ++i) {
 			hash_table->bucket[i] = linked_list_new();
+			if (i > 0)
+				hash_table->bucket[i - 1]->next = hash_table->bucket[i];
 		}
 	}
 
+	// Resize if hash table length exceeds load factor.
 	if (((float)++hash_table->len / (float)hash_table->size) >
 	    ((float)hash_table->load_factor / 10.0)) {
 		hash_table_resize(hash_table);
@@ -102,25 +102,24 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 	return true;
 }
 
-/**
+/*
+ * Return ptr to element.
+ *
  * Returns NULL if doesn't exist.
  */
 char *hash_table_find(HashTable *hash_table, char *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
 	LinkedList *slot = hash_table->bucket[idx];
+	LinkedList *end = hash_table->bucket[idx + 1];
+	slot = slot->next;
 
-	// TODO This could be better.
-	//
 	// Knowing the first node is a dummy node, the first slot is skipped.
-	if (slot->next) {
+	while (slot != end) {
+		if (!strncmp(slot->key, key, 64)) {
+			return slot->value;
+		}
 		slot = slot->next;
-		do {
-			if (!strncmp(slot->key, key, 64)) {
-				return slot->value;
-			}
-			slot = slot->next;
-		} while (slot);
 	}
 	return NULL;
 }
