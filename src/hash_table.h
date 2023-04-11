@@ -6,10 +6,16 @@
 #include <stddef.h>
 #include "hash_function.h"
 
+typedef struct LinkedList {
+	char *key;
+	char *value;
+	struct LinkedList *next;
+} LinkedList;
+
 typedef struct HashTable {
 	// Vector of keys (buckets)
-	void **bucket;
-	// Load factor
+	LinkedList **bucket;
+	// Load factor out of 10
 	int32_t load_factor;
 	// Hashing function
 	size_t (*hash_func)(char *);
@@ -21,10 +27,13 @@ typedef struct HashTable {
 
 HashTable *hash_table_new(void);
 
-void hash_table_insert(HashTable *hash_table);
+char *hash_table_find(HashTable *hash_table, char *key);
 
-void hash_table_remove(HashTable *hash_table);
+bool hash_table_insert(HashTable *hash_table, char *key, void *value);
+
+void hash_table_remove(HashTable *hash_table, char *key);
 
 bool hash_table_contains(HashTable *hash_table);
+
 
 #endif // !HASHTABLE
