@@ -31,7 +31,7 @@ char *hash_table_find(HashTable *hash_table, char *key);
 
 bool hash_table_insert(HashTable *hash_table, char *key, void *value);
 
-void hash_table_remove(HashTable *hash_table, char *key);
+char *hash_table_remove(HashTable *hash_table, char *key);
 
 bool hash_table_contains(HashTable *hash_table);
 

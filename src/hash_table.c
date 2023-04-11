@@ -14,8 +14,7 @@
 
 typedef struct HashTable {
 	// Vector of keys (buckets)
-	LinkedList **bucket;
-	// Load factor out of 10
+	LinkedList **bucket; // Load factor out of 10
 	int32_t load_factor;
 	// Hashing function
 	size_t (*hash_func)(char *);
@@ -124,7 +123,30 @@ char *hash_table_find(HashTable *hash_table, char *key)
 	return NULL;
 }
 
-void hash_table_remove(HashTable *hash_table, char *key)
+/*
+ * Remove element and return ptr to it.
+ *
+ * Return NULL if element does not exist.
+ */
+char *hash_table_remove(HashTable *hash_table, char *key)
 {
-	todo("hash_table_remove: Not implemented yet");
+	size_t idx = hash_table->hash_func(key) % hash_table->size;
+	LinkedList *slot = hash_table->bucket[idx];
+	LinkedList *ptr = hash_table->bucket[idx + 1]; /* Initially points to 'end' */
+	char *value = NULL;
+
+	while (slot->next != ptr) {
+		if (!strncmp(slot->next->key, key, 64)) {
+			ptr = slot->next;
+			slot->next = ptr->next;
+			value = ptr->value;
+
+			--hash_table->len;
+			free(ptr);
+			return value;
+		}
+		slot = slot->next;
+	}
+
+	return NULL;
 }
