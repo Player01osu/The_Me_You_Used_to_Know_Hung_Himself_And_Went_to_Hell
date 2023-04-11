@@ -1,3 +1,4 @@
+#include "linked_list.h"
 #include "hash_function.h"
 #include "utils.h"
 
@@ -11,12 +12,6 @@
 
 #define GROW_TABLE(size) exp2(log2(size) + 1)
 
-typedef struct LinkedList {
-	char *key;
-	char *value;
-	struct LinkedList *next;
-} LinkedList;
-
 typedef struct HashTable {
 	// Vector of keys (buckets)
 	LinkedList **bucket;
@@ -29,9 +24,6 @@ typedef struct HashTable {
 	// Length
 	size_t len;
 } HashTable;
-
-void linked_list_push(LinkedList *linked_list, char *key, char *value);
-LinkedList *linked_list_new(void);
 
 HashTable *hash_table_new(void)
 {
@@ -140,29 +132,3 @@ void hash_table_remove(HashTable *hash_table, char *key)
 {
 	todo("hash_table_remove: Not implemented yet");
 }
-
-LinkedList *linked_list_new(void)
-{
-	LinkedList *this = malloc(sizeof(LinkedList));
-	this->value = NULL;
-	this->key = NULL;
-	this->next = NULL;
-
-	return this;
-}
-
-void linked_list_push(LinkedList *linked_list, char *key, char *value)
-{
-	LinkedList *p = linked_list;
-
-	while (p->next) {
-		p = p->next;
-	}
-	p->next = malloc(sizeof(LinkedList));
-	p = p->next;
-
-	p->next = NULL;
-	p->key = key;
-	p->value = value;
-}
-
