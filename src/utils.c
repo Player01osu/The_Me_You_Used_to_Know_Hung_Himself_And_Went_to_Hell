@@ -7,3 +7,11 @@ void todo(char *msg)
 	exit(69);
 }
 
+// TODO
+void dbg(char *s)
+{
+#ifdef DEBUG
+	printf("%s\n", s);
+#endif /* ifdef DEBUG */
+}
+

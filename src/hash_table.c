@@ -37,14 +37,6 @@ HashTable *hash_table_new(void)
 	return this;
 }
 
-// TODO
-void dbg(char *s)
-{
-#ifdef DEBUG
-	printf("%s\n", s);
-#endif /* ifdef DEBUG */
-}
-
 // Grow in powers of 2
 void hash_table_resize(HashTable *hash_table)
 {

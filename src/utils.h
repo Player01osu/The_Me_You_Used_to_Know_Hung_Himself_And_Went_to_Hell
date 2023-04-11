@@ -3,4 +3,6 @@
 
 void todo(char *msg);
 
+void dbg(char *s);
+
 #endif // !UTILS
