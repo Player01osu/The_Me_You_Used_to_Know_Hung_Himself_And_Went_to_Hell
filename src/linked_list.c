@@ -18,6 +18,13 @@ LinkedList *linked_list_new(void)
 	return this;
 }
 
+void linked_list_push_front(LinkedList *root, char *key, char *value)
+{
+	LinkedList *new_node = malloc(sizeof(LinkedList));
+	new_node->next = root->next;
+	root->next = new_node;
+}
+
 void linked_list_push(LinkedList *linked_list, char *key, char *value)
 {
 	LinkedList *p = linked_list;

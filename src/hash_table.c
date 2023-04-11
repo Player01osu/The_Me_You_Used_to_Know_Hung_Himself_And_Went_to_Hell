@@ -51,6 +51,9 @@ void hash_table_resize(HashTable *hash_table)
 	// Initialize rest bucket
 	for (size_t i = 0; i < hash_table->size; ++i) {
 		hash_table->bucket[i] = linked_list_new();
+
+		if (i > 0)
+			hash_table->bucket[i - 1]->next = hash_table->bucket[i];
 	}
 
 	// Recompute hashes and insert into new bucket.
@@ -60,7 +63,6 @@ void hash_table_resize(HashTable *hash_table)
 		// TODO This could be better.
 		if (p->next) {
 			p = p->next;
-
 			do {
 				size_t idx = hash_table->hash_func(p->key) % hash_table->size;
 				linked_list_push(hash_table->bucket[idx], p->key, p->value);
@@ -93,7 +95,10 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 
 	// TODO: Replace collision with new value and
 	// return old value.
-	linked_list_push(slot, key, value);
+	//
+	// Push to front
+	linked_list_push_front(slot, key, value);
+
 	return true;
 }
 
