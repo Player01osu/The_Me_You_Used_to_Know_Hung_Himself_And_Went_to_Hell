@@ -33,7 +33,7 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value);
 
 char *hash_table_remove(HashTable *hash_table, char *key);
 
-bool hash_table_contains(HashTable *hash_table);
+bool hash_table_contains(HashTable *hash_table, char *key);
 
 
 #endif // !HASHTABLE

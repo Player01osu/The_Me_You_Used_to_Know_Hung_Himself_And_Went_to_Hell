@@ -148,3 +148,19 @@ char *hash_table_remove(HashTable *hash_table, char *key)
 
 	return NULL;
 }
+
+bool hash_table_contains(HashTable *hash_table, char *key) {
+	size_t idx = hash_table->hash_func(key) % hash_table->size;
+	LinkedList *slot = hash_table->bucket[idx];
+	LinkedList *end = hash_table->bucket[idx + 1];
+	slot = slot->next; /* Skip first node */
+
+	while (slot != end) {
+		if (!strncmp(slot->key, key, 64)) {
+			return true;
+		}
+		slot = slot->next;
+	}
+
+	return false;
+}
