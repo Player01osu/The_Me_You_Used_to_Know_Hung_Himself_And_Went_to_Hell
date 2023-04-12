@@ -10,8 +10,6 @@
 #include <math.h>
 #include <string.h>
 
-#define GROW_TABLE(size) exp2(log2(size) + 1)
-
 typedef struct HashTable {
 	// Vector of keys (buckets)
 	LinkedList **bucket; // Load factor out of 10
@@ -44,7 +42,7 @@ void hash_table_resize(HashTable *hash_table)
 	size_t old_size = hash_table->size;
 	LinkedList **old_bucket = hash_table->bucket;
 
-	hash_table->size = GROW_TABLE(hash_table->size);
+	hash_table->size *= 2;
 	hash_table->bucket = malloc(sizeof(LinkedList *) * hash_table->size);
 
 	for (size_t i = 0; i < hash_table->size; ++i) {
