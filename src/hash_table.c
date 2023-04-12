@@ -35,15 +35,21 @@ HashTable *hash_table_new(void)
 	return this;
 }
 
-// Grow in powers of 2
-void hash_table_resize(HashTable *hash_table)
+/*
+ * Resize hash_table. Reallocates and recomputes hashes
+ * for keys.
+ *
+ * Returns if resize was successful.
+ */
+// TODO What to do if size causes 'sufficient collisions'?
+bool hash_table_resize(HashTable *hash_table, size_t new_size)
 {
 	// Hmm... Maybe it's possible to use realloc, and if it doesn't move the block,
 	// just reinitialize it.
 	size_t old_size = hash_table->size;
 	LinkedList **old_bucket = hash_table->bucket;
 
-	hash_table->size *= 2;
+	hash_table->size = new_size;
 	hash_table->bucket = malloc(sizeof(LinkedList *) * hash_table->size);
 
 	for (size_t i = 0; i < hash_table->size; ++i) {
@@ -66,6 +72,7 @@ void hash_table_resize(HashTable *hash_table)
 	for (size_t i = 0; i < old_size; ++i) {
 		free(old_bucket[i]);
 	}
+	return true;
 }
 
 bool hash_table_insert(HashTable *hash_table, char *key, void *value)
@@ -82,9 +89,10 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 	}
 
 	// Resize if hash table length exceeds load factor.
+	// TODO: This could be better
 	if (((float)++hash_table->len / (float)hash_table->size) >
 	    ((float)hash_table->load_factor / 10.0)) {
-		hash_table_resize(hash_table);
+		hash_table_resize(hash_table, hash_table->size * 2);
 	}
 
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
