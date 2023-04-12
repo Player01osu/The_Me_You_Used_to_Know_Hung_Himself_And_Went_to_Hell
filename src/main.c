@@ -116,10 +116,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
-	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
-	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
-	printf("%d\n", hash_table_insert(hash_table, "fand", "Gotta insert again"));
+	printf("contains %d\n", hash_table_contains(hash_table, "fand"));
+	printf("contains %d\n", hash_table_contains(hash_table, "2jweiof"));
+	printf("contains %d\n", hash_table_contains(hash_table, "hi"));
+	printf("contains %d\n", hash_table_contains(hash_table, "test2"));
+	printf("contains %d\n", hash_table_contains(hash_table, "test9"));
+
 
 	return EXIT_SUCCESS;
 }
