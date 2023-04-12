@@ -12,7 +12,8 @@
 
 typedef struct HashTable {
 	// Vector of keys (buckets)
-	LinkedList **bucket; // Load factor out of 10
+	LinkedList **bucket;
+	// Load factor out of 10
 	int32_t load_factor;
 	// Hashing function
 	size_t (*hash_func)(char *);
