@@ -119,11 +119,9 @@ bool hash_table_emplace(HashTable *hash_table, char *key, void *value)
 char *hash_table_find(HashTable *hash_table, char *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
-	LinkedList *slot = hash_table->bucket[idx];
+	LinkedList *slot = hash_table->bucket[idx]->next; /* First node is dummy node */
 	LinkedList *end = hash_table->bucket[idx + 1];
-	slot = slot->next;
 
-	// Knowing the first node is a dummy node, the first slot is skipped.
 	while (slot != end) {
 		if (!strncmp(slot->key, key, 64)) {
 			return slot->value;
