@@ -37,5 +37,6 @@ bool hash_table_contains(HashTable *hash_table, char *key);
 
 bool hash_table_resize(HashTable *hash_table, size_t new_size);
 
+bool hash_table_is_empty(HashTable *hash_table);
 
 #endif // !HASHTABLE

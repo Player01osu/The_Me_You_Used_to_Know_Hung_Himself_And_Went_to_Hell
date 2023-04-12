@@ -74,12 +74,14 @@ int main(int argc, char *argv[])
 
 	assert(hash_table->len == 0);
 	assert(hash_table->size == 32);
+	assert(hash_table_is_empty(hash_table));
 
 	/* Resize table */
 	assert(hash_table_resize(hash_table, 40));
 	assert(hash_table->size == 40);
 	assert(!(hash_table->size == 32));
 	assert(hash_table->len == 0);
+	assert(hash_table_is_empty(hash_table));
 
 	/* Insert 15 elements into table */
 	assert(hash_table_insert(hash_table, "key", "value"));
@@ -98,6 +100,7 @@ int main(int argc, char *argv[])
 	assert(hash_table_insert(hash_table, "test9", "i"));
 	assert(hash_table_insert(hash_table, "test10", "coollllllll"));
 
+	assert(!hash_table_is_empty(hash_table));
 	assert(hash_table->size == 40);
 	assert(hash_table->len == 15);
 

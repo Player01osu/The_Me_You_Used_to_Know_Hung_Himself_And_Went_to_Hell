@@ -172,3 +172,8 @@ bool hash_table_contains(HashTable *hash_table, char *key) {
 
 	return false;
 }
+
+bool hash_table_is_empty(HashTable *hash_table)
+{
+	return hash_table->len == 0;
+}
