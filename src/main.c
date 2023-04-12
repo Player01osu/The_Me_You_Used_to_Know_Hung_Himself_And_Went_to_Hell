@@ -75,5 +75,31 @@ int main(int argc, char *argv[])
 	assert(hash_table->len == 0);
 	assert(hash_table->size == 32);
 
+	/* Resize table */
+	assert(hash_table_resize(hash_table, 40));
+	assert(hash_table->size == 40);
+	assert(!(hash_table->size == 32));
+	assert(hash_table->len == 0);
+
+	/* Insert 15 elements into table */
+	assert(hash_table_insert(hash_table, "key", "value"));
+	assert(hash_table_insert(hash_table, "text", "yerp"));
+	assert(hash_table_insert(hash_table, "sjweifo", "i"));
+	assert(hash_table_insert(hash_table, "efewejfi", "i"));
+	assert(hash_table_insert(hash_table, "test", "i"));
+	assert(hash_table_insert(hash_table, "test1", "i"));
+	assert(hash_table_insert(hash_table, "test2", "i"));
+	assert(hash_table_insert(hash_table, "test3", "i"));
+	assert(hash_table_insert(hash_table, "test4", "i"));
+	assert(hash_table_insert(hash_table, "test5", "i"));
+	assert(hash_table_insert(hash_table, "test6", "i"));
+	assert(hash_table_insert(hash_table, "test7", "i"));
+	assert(hash_table_insert(hash_table, "test8", "i"));
+	assert(hash_table_insert(hash_table, "test9", "i"));
+	assert(hash_table_insert(hash_table, "test10", "coollllllll"));
+
+	assert(hash_table->size == 40);
+	assert(hash_table->len == 15);
+
 	return EXIT_SUCCESS;
 }
