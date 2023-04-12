@@ -29,6 +29,8 @@ HashTable *hash_table_new(void);
 
 char *hash_table_find(HashTable *hash_table, char *key);
 
+bool hash_table_emplace(HashTable *hash_table, char *key, void *value);
+
 bool hash_table_insert(HashTable *hash_table, char *key, void *value);
 
 char *hash_table_remove(HashTable *hash_table, char *key);

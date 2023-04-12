@@ -75,7 +75,10 @@ bool hash_table_resize(HashTable *hash_table, size_t new_size)
 	return true;
 }
 
-bool hash_table_insert(HashTable *hash_table, char *key, void *value)
+/*
+ * Insert into hash_table with references to both key and value.
+ */
+bool hash_table_emplace(HashTable *hash_table, char *key, void *value)
 {
 	// Have to allocate.
 	if (hash_table->size == 0) {

@@ -11,21 +11,21 @@ int main(int argc, char *argv[])
 	HashTable *hash_table = hash_table_new();
 
 	/* Insert 15 elements into table */
-	assert(hash_table_insert(hash_table, "key", "value"));
-	assert(hash_table_insert(hash_table, "text", "yerp"));
-	assert(hash_table_insert(hash_table, "sjweifo", "i"));
-	assert(hash_table_insert(hash_table, "efewejfi", "i"));
-	assert(hash_table_insert(hash_table, "test", "i"));
-	assert(hash_table_insert(hash_table, "test1", "i"));
-	assert(hash_table_insert(hash_table, "test2", "i"));
-	assert(hash_table_insert(hash_table, "test3", "i"));
-	assert(hash_table_insert(hash_table, "test4", "i"));
-	assert(hash_table_insert(hash_table, "test5", "i"));
-	assert(hash_table_insert(hash_table, "test6", "i"));
-	assert(hash_table_insert(hash_table, "test7", "i"));
-	assert(hash_table_insert(hash_table, "test8", "i"));
-	assert(hash_table_insert(hash_table, "test9", "i"));
-	assert(hash_table_insert(hash_table, "test10", "coollllllll"));
+	assert(hash_table_emplace(hash_table, "key", "value"));
+	assert(hash_table_emplace(hash_table, "text", "yerp"));
+	assert(hash_table_emplace(hash_table, "sjweifo", "i"));
+	assert(hash_table_emplace(hash_table, "efewejfi", "i"));
+	assert(hash_table_emplace(hash_table, "test", "i"));
+	assert(hash_table_emplace(hash_table, "test1", "i"));
+	assert(hash_table_emplace(hash_table, "test2", "i"));
+	assert(hash_table_emplace(hash_table, "test3", "i"));
+	assert(hash_table_emplace(hash_table, "test4", "i"));
+	assert(hash_table_emplace(hash_table, "test5", "i"));
+	assert(hash_table_emplace(hash_table, "test6", "i"));
+	assert(hash_table_emplace(hash_table, "test7", "i"));
+	assert(hash_table_emplace(hash_table, "test8", "i"));
+	assert(hash_table_emplace(hash_table, "test9", "i"));
+	assert(hash_table_emplace(hash_table, "test10", "coollllllll"));
 
 	assert(hash_table->size == 32);
 	assert(hash_table->len == 15);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	assert(strcmp(hash_table_remove(hash_table, "key"), "value") == 0);
 	assert(hash_table->len == 14);
 	assert(hash_table_find(hash_table, "key") == NULL);
-	assert(hash_table_insert(hash_table, "key", "value"));
+	assert(hash_table_emplace(hash_table, "key", "value"));
 	assert(strcmp(hash_table_find(hash_table, "key"), "value") == 0);
 
 	/* Remove every element from table */
@@ -84,21 +84,21 @@ int main(int argc, char *argv[])
 	assert(hash_table_is_empty(hash_table));
 
 	/* Insert 15 elements into table */
-	assert(hash_table_insert(hash_table, "key", "value"));
-	assert(hash_table_insert(hash_table, "text", "yerp"));
-	assert(hash_table_insert(hash_table, "sjweifo", "i"));
-	assert(hash_table_insert(hash_table, "efewejfi", "i"));
-	assert(hash_table_insert(hash_table, "test", "i"));
-	assert(hash_table_insert(hash_table, "test1", "i"));
-	assert(hash_table_insert(hash_table, "test2", "i"));
-	assert(hash_table_insert(hash_table, "test3", "i"));
-	assert(hash_table_insert(hash_table, "test4", "i"));
-	assert(hash_table_insert(hash_table, "test5", "i"));
-	assert(hash_table_insert(hash_table, "test6", "i"));
-	assert(hash_table_insert(hash_table, "test7", "i"));
-	assert(hash_table_insert(hash_table, "test8", "i"));
-	assert(hash_table_insert(hash_table, "test9", "i"));
-	assert(hash_table_insert(hash_table, "test10", "coollllllll"));
+	assert(hash_table_emplace(hash_table, "key", "value"));
+	assert(hash_table_emplace(hash_table, "text", "yerp"));
+	assert(hash_table_emplace(hash_table, "sjweifo", "i"));
+	assert(hash_table_emplace(hash_table, "efewejfi", "i"));
+	assert(hash_table_emplace(hash_table, "test", "i"));
+	assert(hash_table_emplace(hash_table, "test1", "i"));
+	assert(hash_table_emplace(hash_table, "test2", "i"));
+	assert(hash_table_emplace(hash_table, "test3", "i"));
+	assert(hash_table_emplace(hash_table, "test4", "i"));
+	assert(hash_table_emplace(hash_table, "test5", "i"));
+	assert(hash_table_emplace(hash_table, "test6", "i"));
+	assert(hash_table_emplace(hash_table, "test7", "i"));
+	assert(hash_table_emplace(hash_table, "test8", "i"));
+	assert(hash_table_emplace(hash_table, "test9", "i"));
+	assert(hash_table_emplace(hash_table, "test10", "coollllllll"));
 
 	assert(!hash_table_is_empty(hash_table));
 	assert(hash_table->size == 40);
