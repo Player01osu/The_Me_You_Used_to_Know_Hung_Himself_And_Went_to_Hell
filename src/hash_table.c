@@ -199,7 +199,27 @@ void *hash_table_remove(HashTable *hash_table, void *key)
 	return NULL;
 }
 
-bool hash_table_contains(HashTable *hash_table, void *key) {
+bool hash_table_destroy(HashTable *hash_table, void *key)
+{
+	size_t idx = hash_table->hash_func(key) % hash_table->size;
+	LinkedList *slot = hash_table->bucket[idx];
+	LinkedList *ptr = hash_table->bucket[idx + 1]; /* Initially points to 'end' */
+	while (slot->next != ptr) {
+		if (hash_table->compare(slot->next->key, key)) {
+			ptr = slot->next;
+			slot->next = ptr->next;
+
+			--hash_table->len;
+			hash_table->destructor(ptr->key, ptr->value);
+			free(ptr);
+			return true;
+		}
+		slot = slot->next;
+	}
+
+	return false;
+}
+
 bool hash_table_contains(HashTable *hash_table, void *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;

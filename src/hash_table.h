@@ -34,6 +34,8 @@ bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key
 
 void *hash_table_remove(HashTable *hash_table, void *key);
 
+bool hash_table_destroy(HashTable *hash_table, void *key);
+
 bool hash_table_contains(HashTable *hash_table, void *key);
 
 bool hash_table_resize(HashTable *hash_table, size_t new_size);

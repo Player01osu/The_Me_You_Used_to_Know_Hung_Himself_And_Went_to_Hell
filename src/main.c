@@ -120,5 +120,8 @@ int main(int argc, char *argv[])
 				 (sizeof(char) * (strlen("value") + 1))));
 	assert(hash_table->len == 16);
 
+	assert(hash_table_destroy(hash_table, "insert"));
+	assert(hash_table->len == 15);
+
 	return EXIT_SUCCESS;
 }
