@@ -5,12 +5,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "hash_function.h"
-
-typedef struct LinkedList {
-	char *key;
-	char *value;
-	struct LinkedList *next;
-} LinkedList;
+#include "linked_list.h"
 
 typedef struct HashTable {
 	// Vector of keys (buckets)
@@ -19,23 +14,25 @@ typedef struct HashTable {
 	int32_t load_factor;
 	// Hashing function
 	size_t (*hash_func)(void *);
+	// Destructor function
+	void (*destructor)(void *);
 	// Size
 	size_t size;
 	// Length
 	size_t len;
 } HashTable;
 
-HashTable *hash_table_new(void);
+HashTable *hash_table_new(size_t hash_func(void *), void destructor(void *));
 
-char *hash_table_find(HashTable *hash_table, char *key);
+void *hash_table_find(HashTable *hash_table, void *key);
 
-bool hash_table_emplace(HashTable *hash_table, char *key, void *value);
+bool hash_table_emplace(HashTable *hash_table, void *key, void *value);
 
-bool hash_table_insert(HashTable *hash_table, char *key, void *value);
+bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size);
 
-char *hash_table_remove(HashTable *hash_table, char *key);
+void *hash_table_remove(HashTable *hash_table, void *key);
 
-bool hash_table_contains(HashTable *hash_table, char *key);
+bool hash_table_contains(HashTable *hash_table, void *key);
 
 bool hash_table_resize(HashTable *hash_table, size_t new_size);
 

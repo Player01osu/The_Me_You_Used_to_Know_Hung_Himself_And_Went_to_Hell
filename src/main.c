@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-	HashTable *hash_table = hash_table_new();
+	HashTable *hash_table = hash_table_new(hash_str, free);
 
 	/* Insert 15 elements into table */
 	assert(hash_table_emplace(hash_table, "key", "value"));
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	assert(hash_table->size == 40);
 	assert(hash_table->len == 15);
 
-	assert(hash_table_insert(hash_table, "insert", "value"));
+	assert(hash_table_insert(hash_table, "insert", "value", (sizeof(char) * strlen("insert"))));
 	assert(hash_table->len == 16);
 
 	return EXIT_SUCCESS;

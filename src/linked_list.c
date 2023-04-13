@@ -1,12 +1,5 @@
 #include <stdlib.h>
-
-typedef struct LinkedList {
-	char *key;
-	char *value;
-	struct LinkedList *next;
-} LinkedList;
-
-void linked_list_push(LinkedList *linked_list, char *key, char *value);
+#include "linked_list.h"
 
 LinkedList *linked_list_new(void)
 {
@@ -18,7 +11,7 @@ LinkedList *linked_list_new(void)
 	return this;
 }
 
-void linked_list_push_front(LinkedList *root, char *key, char *value)
+void linked_list_push_front(LinkedList *root, void *key, void *value)
 {
 	LinkedList *new_node = malloc(sizeof(LinkedList));
 	new_node->next = root->next;
@@ -27,7 +20,7 @@ void linked_list_push_front(LinkedList *root, char *key, char *value)
 	root->next = new_node;
 }
 
-void linked_list_push(LinkedList *linked_list, char *key, char *value)
+void linked_list_push(LinkedList *linked_list, void *key, void *value)
 {
 	LinkedList *p = linked_list;
 

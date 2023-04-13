@@ -1,5 +1,6 @@
 #include "linked_list.h"
 #include "hash_function.h"
+#include "hash_table.h"
 #include "utils.h"
 
 #include <assert.h>
@@ -10,26 +11,14 @@
 #include <ctype.h>
 #include <string.h>
 
-typedef struct HashTable {
-	// Vector of keys (buckets)
-	LinkedList **bucket;
-	// Load factor out of 10
-	int32_t load_factor;
-	// Hashing function
-	size_t (*hash_func)(void *);
-	// Size
-	size_t size;
-	// Length
-	size_t len;
-} HashTable;
-
-HashTable *hash_table_new(void)
+HashTable *hash_table_new(size_t hash_func(void *), void destructor(void *))
 {
 	HashTable *this = malloc(sizeof(HashTable));
-	this->hash_func = hash_str;
+	this->bucket = NULL;
+	this->hash_func = hash_func;
+	this->destructor = destructor;
 	this->load_factor = 7;
 	this->len = 0;
-	this->bucket = NULL;
 	this->size = 0;
 
 	return this;
@@ -78,7 +67,7 @@ bool hash_table_resize(HashTable *hash_table, size_t new_size)
 /*
  * Insert into hash_table creating copies for both key and value.
  */
-bool hash_table_insert(HashTable *hash_table, char *key, void *value)
+bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size)
 {
 	// Have to allocate.
 	if (hash_table->size == 0) {
@@ -107,11 +96,11 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 	//
 	// Push to front
 	// TODO Need to deal with a destructor function.
-	char *key_copy = malloc(sizeof(char) * strnlen(key, 64) + 1);
-	char *value_copy = malloc(sizeof(char) * strnlen(value, 64) + 1);
+	char *key_copy = malloc(key_size);
+	char *value_copy = malloc(key_size);
 
-	memcpy(key_copy, key, sizeof(char) * strnlen(key, 64) + 1);
-	memcpy(value_copy, value, sizeof(char) * strnlen(value, 64) + 1);
+	memcpy(key_copy, key, key_size);
+	memcpy(value_copy, value, key_size);
 
 	#ifdef DEBUG
 	assert(strcmp(key, key_copy) == 0);
@@ -128,7 +117,7 @@ bool hash_table_insert(HashTable *hash_table, char *key, void *value)
 /*
  * Insert into hash_table with references to both key and value.
  */
-bool hash_table_emplace(HashTable *hash_table, char *key, void *value)
+bool hash_table_emplace(HashTable *hash_table, void *key, void *value)
 {
 	// Have to allocate.
 	if (hash_table->size == 0) {
@@ -166,7 +155,7 @@ bool hash_table_emplace(HashTable *hash_table, char *key, void *value)
  *
  * Returns NULL if doesn't exist.
  */
-char *hash_table_find(HashTable *hash_table, char *key)
+void *hash_table_find(HashTable *hash_table, void *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
 	LinkedList *slot = hash_table->bucket[idx]->next; /* First node is dummy node */
@@ -186,7 +175,7 @@ char *hash_table_find(HashTable *hash_table, char *key)
  *
  * Return NULL if element does not exist.
  */
-char *hash_table_remove(HashTable *hash_table, char *key)
+void *hash_table_remove(HashTable *hash_table, void *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
 	LinkedList *slot = hash_table->bucket[idx];
@@ -209,7 +198,7 @@ char *hash_table_remove(HashTable *hash_table, char *key)
 	return NULL;
 }
 
-bool hash_table_contains(HashTable *hash_table, char *key) {
+bool hash_table_contains(HashTable *hash_table, void *key) {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
 	LinkedList *slot = hash_table->bucket[idx]->next;
 	LinkedList *end = hash_table->bucket[idx + 1];
