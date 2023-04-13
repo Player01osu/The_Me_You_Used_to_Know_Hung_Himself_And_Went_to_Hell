@@ -67,7 +67,7 @@ bool hash_table_resize(HashTable *hash_table, size_t new_size)
 /*
  * Insert into hash_table creating copies for both key and value.
  */
-bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size)
+bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size, size_t value_size)
 {
 	// Have to allocate.
 	if (hash_table->size == 0) {
@@ -97,17 +97,17 @@ bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key
 	// Push to front
 	// TODO Need to deal with a destructor function.
 	char *key_copy = malloc(key_size);
-	char *value_copy = malloc(key_size);
+	char *value_copy = malloc(value_size);
 
 	memcpy(key_copy, key, key_size);
-	memcpy(value_copy, value, key_size);
+	memcpy(value_copy, value, value_size);
 
-	#ifdef DEBUG
-	assert(strcmp(key, key_copy) == 0);
-	assert(strcmp(value, value_copy) == 0);
+#ifdef DEBUG
+	assert(hash_table->compare(key, key_copy));
+	assert(hash_table->compare(value, value_copy));
 	assert(key != key_copy);
 	assert(value != value_copy);
-	#endif /* ifdef DEBUG */
+#endif /* ifdef DEBUG */
 
 	linked_list_push_front(slot, key_copy, value_copy);
 

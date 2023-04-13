@@ -22,13 +22,13 @@ typedef struct HashTable {
 	size_t len;
 } HashTable;
 
-HashTable *hash_table_new(size_t hash_func(void *), void destructor(void *));
+HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *), void destructor(void *, void *));
 
 void *hash_table_find(HashTable *hash_table, void *key);
 
 bool hash_table_emplace(HashTable *hash_table, void *key, void *value);
 
-bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size);
+bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size, size_t value_size);
 
 void *hash_table_remove(HashTable *hash_table, void *key);
 

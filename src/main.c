@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	assert(hash_table->size == 40);
 	assert(hash_table->len == 15);
 
-	assert(hash_table_insert(hash_table, "insert", "value", (sizeof(char) * strlen("insert"))));
+	assert(hash_table_insert(hash_table, "insert", "value", (sizeof(char) * (strlen("insert") + 1)), (sizeof(char) * (strlen("value") + 1))));
 	assert(hash_table->len == 16);
 
 	return EXIT_SUCCESS;
