@@ -7,6 +7,6 @@
 
 size_t hash_int32(int32_t d);
 
-size_t hash_str(char *s);
+size_t hash_str(void *s);
 
 #endif // !HASHFUNCTION

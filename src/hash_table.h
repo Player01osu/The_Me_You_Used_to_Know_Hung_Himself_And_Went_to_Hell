@@ -18,7 +18,7 @@ typedef struct HashTable {
 	// Load factor out of 10
 	int32_t load_factor;
 	// Hashing function
-	size_t (*hash_func)(char *);
+	size_t (*hash_func)(void *);
 	// Size
 	size_t size;
 	// Length
