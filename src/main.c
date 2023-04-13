@@ -6,9 +6,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+void string_string_destructor(void *key, void *value)
+{
+	free(key);
+	free(value);
+}
+
+bool string_compare(void *s1, void *s2)
+{
+	return !strncmp((char *)s1, (char *)s2, 64);
+}
+
 int main(int argc, char *argv[])
 {
-	HashTable *hash_table = hash_table_new(hash_str, free);
+	HashTable *hash_table = hash_table_new(hash_str, string_compare, string_string_destructor);
 
 	/* Insert 15 elements into table */
 	assert(hash_table_emplace(hash_table, "key", "value"));
@@ -104,7 +115,9 @@ int main(int argc, char *argv[])
 	assert(hash_table->size == 40);
 	assert(hash_table->len == 15);
 
-	assert(hash_table_insert(hash_table, "insert", "value", (sizeof(char) * (strlen("insert") + 1)), (sizeof(char) * (strlen("value") + 1))));
+	assert(hash_table_insert(hash_table, "insert", "value",
+				 (sizeof(char) * (strlen("insert") + 1)),
+				 (sizeof(char) * (strlen("value") + 1))));
 	assert(hash_table->len == 16);
 
 	return EXIT_SUCCESS;

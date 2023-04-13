@@ -11,11 +11,12 @@
 #include <ctype.h>
 #include <string.h>
 
-HashTable *hash_table_new(size_t hash_func(void *), void destructor(void *))
+HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *), void destructor(void *, void *))
 {
 	HashTable *this = malloc(sizeof(HashTable));
 	this->bucket = NULL;
 	this->hash_func = hash_func;
+	this->compare = compare;
 	this->destructor = destructor;
 	this->load_factor = 7;
 	this->len = 0;
@@ -162,7 +163,7 @@ void *hash_table_find(HashTable *hash_table, void *key)
 	LinkedList *end = hash_table->bucket[idx + 1];
 
 	while (slot != end) {
-		if (!strncmp(slot->key, key, 64)) {
+		if (hash_table->compare(slot->key, key)) {
 			return slot->value;
 		}
 		slot = slot->next;
@@ -183,7 +184,7 @@ void *hash_table_remove(HashTable *hash_table, void *key)
 	char *value = NULL;
 
 	while (slot->next != ptr) {
-		if (!strncmp(slot->next->key, key, 64)) {
+		if (hash_table->compare(slot->next->key, key)) {
 			ptr = slot->next;
 			slot->next = ptr->next;
 			value = ptr->value;
@@ -199,12 +200,14 @@ void *hash_table_remove(HashTable *hash_table, void *key)
 }
 
 bool hash_table_contains(HashTable *hash_table, void *key) {
+bool hash_table_contains(HashTable *hash_table, void *key)
+{
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
 	LinkedList *slot = hash_table->bucket[idx]->next;
 	LinkedList *end = hash_table->bucket[idx + 1];
 
 	while (slot != end) {
-		if (!strncmp(slot->key, key, 64)) {
+		if (hash_table->compare(slot->key, key)) {
 			return true;
 		}
 		slot = slot->next;

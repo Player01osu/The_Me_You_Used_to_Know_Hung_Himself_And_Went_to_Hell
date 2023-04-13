@@ -15,7 +15,9 @@ typedef struct HashTable {
 	// Hashing function
 	size_t (*hash_func)(void *);
 	// Destructor function
-	void (*destructor)(void *);
+	void (*destructor)(void *, void *);
+	// Comparison function
+	bool (*compare)(void *, void *);
 	// Size
 	size_t size;
 	// Length
