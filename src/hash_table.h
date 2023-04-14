@@ -26,6 +26,8 @@ typedef struct HashTable {
 
 HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *), void destructor(void *, void *));
 
+HashTable *hash_table_with_capacity(size_t hash_func(void *), bool compare(void *, void *), void destructor(void *, void *), size_t capacity);
+
 void *hash_table_find(HashTable *hash_table, void *key);
 
 bool hash_table_emplace(HashTable *hash_table, void *key, void *value);

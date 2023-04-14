@@ -11,7 +11,8 @@
 #include <ctype.h>
 #include <string.h>
 
-HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *), void destructor(void *, void *))
+HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *),
+			  void destructor(void *, void *))
 {
 	HashTable *this = malloc(sizeof(HashTable));
 	this->bucket = NULL;
@@ -22,6 +23,27 @@ HashTable *hash_table_new(size_t hash_func(void *), bool compare(void *, void *)
 	this->len = 0;
 	this->size = 0;
 
+	return this;
+}
+
+HashTable *hash_table_with_capacity(size_t hash_func(void *), bool compare(void *, void *),
+				    void destructor(void *, void *), size_t capacity)
+{
+	HashTable *this = malloc(sizeof(HashTable));
+	this->hash_func = hash_func;
+	this->compare = compare;
+	this->destructor = destructor;
+	this->load_factor = 7;
+	this->len = 0;
+	this->size = capacity;
+
+	this->bucket = malloc(sizeof(LinkedList *) * capacity);
+
+	for (size_t i = 0; i < this->size; ++i) {
+		this->bucket[i] = linked_list_new();
+		if (i > 0)
+			this->bucket[i - 1]->next = this->bucket[i];
+	}
 	return this;
 }
 
@@ -68,7 +90,8 @@ bool hash_table_resize(HashTable *hash_table, size_t new_size)
 /*
  * Insert into hash_table creating copies for both key and value.
  */
-bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size, size_t value_size)
+bool hash_table_insert(HashTable *hash_table, void *key, void *value, size_t key_size,
+		       size_t value_size)
 {
 	// Have to allocate.
 	if (hash_table->size == 0) {
