@@ -131,21 +131,22 @@ int main(int argc, char *argv[])
 	assert(hash_table_is_empty(hash_table));
 
 
-	//clock_t start = clock();
+	clock_t start = clock();
+	char buf[32];
 
-	//for (int32_t j = 0; j < 50; ++j) {
-	//	for (int32_t i = 0; i < 100000; ++i) {
-	//		sprintf(buf, "%d", i);
-	//		hash_table_insert(hash_table, buf, buf, SIZESTR(buf), SIZESTR(buf));
-	//	}
-	//	hash_table_clear(hash_table);
-	//}
+	for (int32_t j = 0; j < 50; ++j) {
+		for (int32_t i = 0; i < 100000; ++i) {
+			sprintf(buf, "%d", i);
+			hash_table_insert(hash_table, buf, buf, SIZESTR(buf), SIZESTR(buf));
+		}
+		hash_table_clear(hash_table);
+	}
 
-	//clock_t end = clock();
-	//printf("Len: %lu\n", hash_table->len);
-	//printf("Size: %lu\n", hash_table->size);
+	clock_t end = clock();
+	printf("Len: %lu\n", hash_table->len);
+	printf("Size: %lu\n", hash_table->size);
 
-	//printf("Total Time: %f", (double)(end - start) / CLOCKS_PER_SEC);
+	printf("Total Time: %f", (double)(end - start) / CLOCKS_PER_SEC);
 
 	return EXIT_SUCCESS;
 }
