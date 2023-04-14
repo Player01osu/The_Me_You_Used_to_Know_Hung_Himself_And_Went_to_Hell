@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+#define SIZESTR(str) sizeof(char) * (strlen(str) + 1)
 
 void string_string_destructor(void *key, void *value)
 {
@@ -95,21 +98,22 @@ int main(int argc, char *argv[])
 	assert(hash_table_is_empty(hash_table));
 
 	/* Insert 15 elements into table */
-	assert(hash_table_emplace(hash_table, "key", "value"));
-	assert(hash_table_emplace(hash_table, "text", "yerp"));
-	assert(hash_table_emplace(hash_table, "sjweifo", "i"));
-	assert(hash_table_emplace(hash_table, "efewejfi", "i"));
-	assert(hash_table_emplace(hash_table, "test", "i"));
-	assert(hash_table_emplace(hash_table, "test1", "i"));
-	assert(hash_table_emplace(hash_table, "test2", "i"));
-	assert(hash_table_emplace(hash_table, "test3", "i"));
-	assert(hash_table_emplace(hash_table, "test4", "i"));
-	assert(hash_table_emplace(hash_table, "test5", "i"));
-	assert(hash_table_emplace(hash_table, "test6", "i"));
-	assert(hash_table_emplace(hash_table, "test7", "i"));
-	assert(hash_table_emplace(hash_table, "test8", "i"));
-	assert(hash_table_emplace(hash_table, "test9", "i"));
-	assert(hash_table_emplace(hash_table, "test10", "coollllllll"));
+	assert(hash_table_insert(hash_table, "key", "value", SIZESTR("key"), SIZESTR("value")));
+	assert(hash_table_insert(hash_table, "text", "yerp", SIZESTR("text"), SIZESTR("yerp")));
+	assert(hash_table_insert(hash_table, "sjweifo", "i", SIZESTR("sjweifo"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "efewejfi", "i", SIZESTR("efewejfi"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test", "i", SIZESTR("test"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test1", "i", SIZESTR("test1"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test2", "i", SIZESTR("test2"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test3", "i", SIZESTR("test3"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test4", "i", SIZESTR("test4"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test5", "i", SIZESTR("test5"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test6", "i", SIZESTR("test6"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test7", "i", SIZESTR("test7"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test8", "i", SIZESTR("test8"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test9", "i", SIZESTR("test9"), SIZESTR("i")));
+	assert(hash_table_insert(hash_table, "test10", "coollllllll", SIZESTR("test10"),
+				 SIZESTR("coollllllll")));
 
 	assert(!hash_table_is_empty(hash_table));
 	assert(hash_table->size == 40);
@@ -122,6 +126,26 @@ int main(int argc, char *argv[])
 
 	assert(hash_table_destroy(hash_table, "insert"));
 	assert(hash_table->len == 15);
+
+	assert(hash_table_clear(hash_table));
+	assert(hash_table_is_empty(hash_table));
+
+
+	//clock_t start = clock();
+
+	//for (int32_t j = 0; j < 50; ++j) {
+	//	for (int32_t i = 0; i < 100000; ++i) {
+	//		sprintf(buf, "%d", i);
+	//		hash_table_insert(hash_table, buf, buf, SIZESTR(buf), SIZESTR(buf));
+	//	}
+	//	hash_table_clear(hash_table);
+	//}
+
+	//clock_t end = clock();
+	//printf("Len: %lu\n", hash_table->len);
+	//printf("Size: %lu\n", hash_table->size);
+
+	//printf("Total Time: %f", (double)(end - start) / CLOCKS_PER_SEC);
 
 	return EXIT_SUCCESS;
 }
