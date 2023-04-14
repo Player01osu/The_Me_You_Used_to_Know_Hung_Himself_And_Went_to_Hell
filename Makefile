@@ -1,7 +1,7 @@
 CC := gcc
 IN := src/*.c
 OUT := target/main
-CFLAGS := -Wall -pedantic -Wno-deprecated-declarations -ffast-math -fomit-frame-pointer -g3
+CFLAGS := -Wall -pedantic -Wno-deprecated-declarations -ffast-math -fomit-frame-pointer -g3 -std=c99
 DEBUG_FLAGS := -DDEBUG
 
 all:
