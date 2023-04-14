@@ -222,6 +222,11 @@ void *hash_table_remove(HashTable *hash_table, void *key)
 	return NULL;
 }
 
+/*
+ * Finds element in table and calls destructor function and removes from table.
+ *
+ * Returns true if element was destroyed successfully.
+ */
 bool hash_table_destroy(HashTable *hash_table, void *key)
 {
 	size_t idx = hash_table->hash_func(key) % hash_table->size;
@@ -241,6 +246,29 @@ bool hash_table_destroy(HashTable *hash_table, void *key)
 	}
 
 	return false;
+}
+
+/*
+ * Empties hash_table calling destructor function on each element.
+ */
+bool hash_table_clear(HashTable *hash_table)
+{
+	LinkedList *slot = *hash_table->bucket;
+
+	while (slot) {
+		if (slot->key) {
+			hash_table->destructor(slot->key, slot->value);
+			slot->key = NULL;
+			/* Might want to just zero it at the end, but this is okay for now. */
+			--hash_table->len;
+		}
+		slot = slot->next;
+	}
+
+#ifdef DEBUG
+	assert(hash_table->len == 0);
+#endif /* ifdef DEBUG */
+	return true;
 }
 
 bool hash_table_contains(HashTable *hash_table, void *key)
