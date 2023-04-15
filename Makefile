@@ -21,6 +21,16 @@ OBJS_RELEASE := ${patsubst ${SRC}/%.c, ${OBJ_RELEASE}/%.o, ${SRCS}}
 
 LIB_RELEASE := ${OUT_DIR_RELEASE}/hash_table.a
 
+TEST_DIR := tests
+TEST_SRCS := ${wildcard ${TEST_DIR}/*.c}
+TEST_BIN_DIR := ${TEST_DIR}/bin
+TEST_BINS := ${patsubst ${TEST_DIR}/%.c, ${TEST_BIN_DIR}/%, ${TEST_SRCS}}
+
+BENCHMARK_DIR := benchmarks
+BENCHMARK_SRCS := ${wildcard ${BENCHMARK_DIR}/*.c}
+BENCHMARK_BIN_DIR := ${BENCHMARK_DIR}/bin
+BENCHMARK_BINS := ${patsubst ${BENCHMARK_DIR}/%.c, ${BENCHMARK_BIN_DIR}/%, ${BENCHMARK_SRCS}}
+
 all: debug
 
 release: OUT_DIR := ${RELEASE}
@@ -55,5 +65,25 @@ ${OBJ}/%.o: ${SRC}/%.c
 
 debug: ${LIB}
 
+
+test: ${LIB}
+test: ${TEST_BINS}
+
+${TEST_BIN_DIR}/%: ${TEST_DIR}/%.c
+	mkdir -p ${TEST_DIR}
+	mkdir -p ${TEST_BIN_DIR}
+	${CC} $< ${LIB} ${CFLAGS} -o $@
+	./$@
+
+benchmark: ${LIB}
+benchmark: ${BENCHMARK_BINS}
+
+${BENCHMARK_BIN_DIR}/%: ${BENCHMARK_DIR}/%.c
+	mkdir -p ${BENCHMARK_DIR}
+	mkdir -p ${BENCHMARK_BIN_DIR}
+	${CC} $< ${LIB} ${CFLAGS} -o $@
+	./$@
+
+
 clean:
-	rm -fr ${TARGET} ${OBJ_DIR}/*
+	rm -fr ${TARGET} ${OBJ_DIR}/* ${TEST_BIN_DIR}/*
