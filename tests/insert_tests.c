@@ -23,6 +23,7 @@ bool string_compare(void *s1, void *s2)
 int main(int argc, char *argv[])
 {
 	HashTable *hash_table = hash_table_new(hash_str, string_compare, string_string_destructor);
+	clock_t start = clock();
 
 	/* Insert 15 elements into table */
 	assert(hash_table_emplace(hash_table, "key", "value"));
@@ -129,6 +130,8 @@ int main(int argc, char *argv[])
 
 	assert(hash_table_clear(hash_table));
 	assert(hash_table_is_empty(hash_table));
-
+	clock_t end = clock();
+;
+	printf("All tests passed!: %f\n", (double)(end - start) / CLOCKS_PER_SEC);
 	return EXIT_SUCCESS;
 }
